@@ -2,7 +2,7 @@
 individual-assignment-1-my-class-journal-branqwynn created by GitHub Classroom
 
 Timeliness
-.
+
 Program turned in on time?  
 
 Days late: 0 X 10% penalty per day: 0
