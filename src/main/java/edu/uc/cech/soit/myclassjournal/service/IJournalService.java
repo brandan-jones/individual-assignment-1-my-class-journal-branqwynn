@@ -20,4 +20,6 @@ public interface IJournalService {
      * @return a collection of all journal entries.
      */
     List<JournalEntry> fetchAll();
+
+    List<JournalEntry> fetchByDate(String filterDate);
 }

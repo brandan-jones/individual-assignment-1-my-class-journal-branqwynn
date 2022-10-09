@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,7 +28,7 @@ class MyclassjournalApplicationTests {
     @Test
     void verifyJournalEntryProperties() {
         String notes =  "I am running a unit test";
-        String date = "September 2021";
+        String date = "September 2022";
 
         JournalEntry journalEntry = new JournalEntry();
         journalEntry.setNotes(notes);
@@ -43,7 +44,7 @@ class MyclassjournalApplicationTests {
     @Test
     void verifyAddAndRemoveJournalEntries() {
         String notes =  "My first entry!";
-        String date = "October 2021";
+        String date = "October 2022";
 
         JournalEntry journalEntry = new JournalEntry();
         journalEntry.setNotes(notes);
@@ -63,6 +64,66 @@ class MyclassjournalApplicationTests {
         assertTrue(journalEntryPresent);
 
 
+    }
+
+    /**
+     * Validates that JournalService can fetchbydate based on array list of data
+     */
+
+    @Test
+    void verifyThatJournalServicesFetchByDateWorksCorrectly(){
+        String notes1 =  "My first entry!";
+        String date1 = "January 2022";
+
+        String notes2 = "My second entry!";
+        String date2 = "January 2022";
+
+        String notes3 = "My third entry!";
+        String date3 = "February 2022";
+
+        JournalEntry journalEntry1 = new JournalEntry();
+        journalEntry1.setNotes(notes1);
+        journalEntry1.setDate(date1);
+
+        JournalEntry journalEntry2 = new JournalEntry();
+        journalEntry2.setNotes(notes2);
+        journalEntry2.setDate(date2);
+
+        JournalEntry journalEntry3 = new JournalEntry();
+        journalEntry3.setNotes(notes3);
+        journalEntry3.setDate(date3);
+
+        List<JournalEntry> octoberEntries = new ArrayList<JournalEntry>();
+        octoberEntries.add(journalEntry1);
+        octoberEntries.add(journalEntry2);
+
+        journalService.save(journalEntry1);
+        journalService.save(journalEntry2);
+        journalService.save(journalEntry3);
+
+        List<JournalEntry> returnedList = journalService.fetchByDate("January 2022");
+
+        boolean listsAreEqual = true;
+        if(returnedList.size() != octoberEntries.size()){
+            assertTrue(!listsAreEqual);
+        }else {
+            for (JournalEntry je :
+                    returnedList) {
+                boolean foundMatch = false;
+                for (JournalEntry oe :
+                        octoberEntries) {
+                    if (je.getDate().equals(oe.getDate()) && je.getNotes().equals(oe.getNotes())){
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (!foundMatch){
+                    listsAreEqual = false;
+                    break;
+                }
+            }
+        }
+        assertTrue(listsAreEqual);
     }
 
 }
